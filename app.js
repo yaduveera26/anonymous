@@ -8,11 +8,10 @@ const flash = require('connect-flash');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const cookie = require('cookie-parser');
-
+require('dotenv').config();
 
 const app = express();
 app.set('view engine', 'ejs');
-
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookie());
 
@@ -31,7 +30,7 @@ const Account = require('./models/account');
 const data = require('./models/data');
 
 // storing all data to a local database test.
-mongoose.connect('mongodb://localhost/test', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 let db = mongoose.connection;
 
 
@@ -809,7 +808,8 @@ app.get('/logout/:uid',(req,res)=>{
   })
 })
 
-app.listen('3000', (err) => {
+let PORT = process.env.PORT || 3000;
+app.listen(PORT, (err) => {
 
   if (err)
         console.log(err);
